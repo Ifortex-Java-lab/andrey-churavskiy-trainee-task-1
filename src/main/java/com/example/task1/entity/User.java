@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -19,7 +21,7 @@ public class User {
     @Column(unique = true)
     private String customerId;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Subscription subscription;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Subscription> subscription;
 
 }

@@ -14,7 +14,7 @@ CREATE TYPE subscription_status AS ENUM (
 
 CREATE TABLE subscriptions (
        id SERIAL PRIMARY KEY,
-       user_id INTEGER NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
        price_id VARCHAR(255) NOT NULL,
        status subscription_status NOT NULL,
        current_period_start TIMESTAMP,

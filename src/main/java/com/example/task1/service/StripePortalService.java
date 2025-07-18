@@ -7,6 +7,7 @@ import com.example.task1.repository.UserRepository;
 import com.stripe.model.billingportal.Session;
 import com.stripe.param.billingportal.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,10 @@ public class StripePortalService {
 
     private final UserRepository userRepository;
 
-    public StripePortalResponse createPortalSession(StripePortalRequest request, String returnUrl) throws Exception {
+    @Value("${stripe.return-url}")
+    private String returnUrl;
+
+    public StripePortalResponse createPortalSession(StripePortalRequest request) throws Exception {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
 

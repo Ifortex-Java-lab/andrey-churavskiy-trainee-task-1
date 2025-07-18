@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class StripePortalController {
 
     private final StripePortalService stripePortalService;
-    @Value("${stripe.return-url}")
-    private String returnUrl;
 
     @PostMapping
     public StripePortalResponse createPortalSession(@RequestBody StripePortalRequest request) throws Exception {
-        return stripePortalService.createPortalSession(request, returnUrl);
+        return stripePortalService.createPortalSession(request);
     }
 }

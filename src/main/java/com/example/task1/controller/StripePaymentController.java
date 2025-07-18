@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/stripe")
 @RequiredArgsConstructor
 public class StripePaymentController {
-    private final StripePaymentService stripePaymentService;
-    @Value("${stripe.success-url}")
-    private String successUrl;
-    @Value("${stripe.cancel-url}")
-    private String cancelUrl;
 
+    private final StripePaymentService stripePaymentService;
 
     @PostMapping("/checkout")
     public StripeCheckoutResponse createCheckoutSession(@RequestBody StripeCheckoutRequest request) throws Exception {
-        return stripePaymentService.createCheckoutSession(request, successUrl, cancelUrl);
+        return stripePaymentService.createCheckoutSession(request);
     }
 }

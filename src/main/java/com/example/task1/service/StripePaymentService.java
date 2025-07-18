@@ -24,6 +24,10 @@ public class StripePaymentService {
 
     @Value("${stripe.api.key}")
     private String stripeApiKey;
+    @Value("${stripe.success-url}")
+    private String successUrl;
+    @Value("${stripe.cancel-url}")
+    private String cancelUrl;
 
     @PostConstruct
     public void init() {
@@ -31,7 +35,7 @@ public class StripePaymentService {
     }
 
     @Transactional
-    public StripeCheckoutResponse createCheckoutSession(StripeCheckoutRequest request, String successUrl, String cancelUrl) throws Exception {
+    public StripeCheckoutResponse createCheckoutSession(StripeCheckoutRequest request) throws Exception {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
 

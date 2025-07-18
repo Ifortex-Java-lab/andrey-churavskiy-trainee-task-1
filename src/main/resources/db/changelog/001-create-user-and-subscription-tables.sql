@@ -1,7 +1,7 @@
 CREATE TABLE users (
        id SERIAL PRIMARY KEY,
        email VARCHAR(255) NOT NULL UNIQUE,
-       customer_id VARCHAR(255) UNIQUE
+       customer_id VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE subscriptions (

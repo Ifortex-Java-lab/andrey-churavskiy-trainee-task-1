@@ -19,21 +19,21 @@ public class StripePortalService {
     @Value("${stripe.return-url}")
     private String returnUrl;
 
-    public StripePortalResponse createPortalSession(StripePortalRequest request) throws Exception {
+    public StripePortalResponse createPortalSession(StripePortalRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
 
-        if (user.getCustomerId() == null || user.getCustomerId().isEmpty()) {
-            throw new IllegalStateException("User does not have associated Stripe customerId");
+        try {
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .setCustomer(user.getCustomerId())
+                    .setReturnUrl(returnUrl)
+                    .build();
+
+            Session session = Session.create(params);
+
+            return new StripePortalResponse(session.getUrl());
+        } catch (Exception e) {
+            throw new RuntimeException("Stripe portal session creation failed", e);
         }
-
-        SessionCreateParams params = SessionCreateParams.builder()
-                .setCustomer(user.getCustomerId())
-                .setReturnUrl(returnUrl)
-                .build();
-
-        Session session = Session.create(params);
-
-        return new StripePortalResponse(session.getUrl());
     }
 }

@@ -4,19 +4,11 @@ CREATE TABLE users (
        customer_id VARCHAR(255) UNIQUE
 );
 
-CREATE TYPE subscription_status AS ENUM (
-    'ACTIVE',
-    'INACTIVE',
-    'TRIALING',
-    'PAST_DUE',
-    'CANCELED'
-    );
-
 CREATE TABLE subscriptions (
        id SERIAL PRIMARY KEY,
        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
        price_id VARCHAR(255) NOT NULL,
-       status subscription_status NOT NULL,
+       status VARCHAR(20) NOT NULL,
        current_period_start TIMESTAMP,
        current_period_end TIMESTAMP,
        stripe_subscription_id VARCHAR(255)

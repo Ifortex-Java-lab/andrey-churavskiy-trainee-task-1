@@ -24,6 +24,7 @@ public class Subscription {
     private String priceId;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private SubscriptionStatus status;
 
     private LocalDateTime currentPeriodEnd;

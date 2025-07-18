@@ -23,6 +23,9 @@ public class Subscription {
     @Column(nullable = false)
     private String priceId;
 
+    @Column(nullable = false)
+    private String productId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SubscriptionStatus status;

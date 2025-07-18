@@ -42,6 +42,7 @@ public class StripeWebhookService {
         }
 
         String priceId = null;
+        String productId = null;
         Long currentPeriodStart = null;
         Long currentPeriodEnd = null;
 
@@ -52,6 +53,7 @@ public class StripeWebhookService {
             StripeSubscriptionItemDto item = stripeSub.getItems().getData().get(0);
             if (item.getPrice() != null) {
                 priceId = item.getPrice().getId();
+                productId = item.getPrice().getProduct();
             }
             currentPeriodStart = item.getCurrent_period_start();
             currentPeriodEnd = item.getCurrent_period_end();
@@ -67,6 +69,7 @@ public class StripeWebhookService {
                     dto.setStripeSubscriptionId(stripeSubscriptionId);
                     dto.setStatus(status);
                     dto.setPriceId(priceId);
+                    dto.setProductId(productId);
                     if (currentPeriodStart != null) {
                         dto.setCurrentPeriodStart(
                                 LocalDateTime.ofInstant(Instant.ofEpochSecond(currentPeriodStart), ZoneOffset.UTC));
@@ -92,6 +95,7 @@ public class StripeWebhookService {
                     Subscription subscription = optionalSubscription.get();
                     subscription.setStatus(status);
                     subscription.setPriceId(priceId);
+                    subscription.setProductId(productId);
                     if (currentPeriodStart != null) {
                         subscription.setCurrentPeriodStart(
                                 LocalDateTime.ofInstant(Instant.ofEpochSecond(currentPeriodStart), ZoneOffset.UTC));

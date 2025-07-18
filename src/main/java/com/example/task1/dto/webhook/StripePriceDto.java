@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class StripePriceDto {
     private String id;
     private String object;
+    private String product;
 }

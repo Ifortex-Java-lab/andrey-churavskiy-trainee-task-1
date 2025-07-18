@@ -14,6 +14,7 @@ public class SubscriptionDto {
     private Long id;
     private Long userId;
     private String priceId;
+    private String productId;
     private SubscriptionStatus status;
     private LocalDateTime currentPeriodEnd;
     private LocalDateTime currentPeriodStart;

@@ -35,33 +35,28 @@ public class StripePaymentService {
     }
 
     @Transactional
-    public StripeCheckoutResponse createCheckoutSession(StripeCheckoutRequest request) throws Exception {
+    public StripeCheckoutResponse createCheckoutSession(StripeCheckoutRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + request.getUserId()));
 
-        if (user.getCustomerId() == null || user.getCustomerId().isEmpty()) {
-            CustomerCreateParams customerParams = CustomerCreateParams.builder()
-                    .setEmail(user.getEmail())
+        try {
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .setSuccessUrl(successUrl)
+                    .setCancelUrl(cancelUrl)
+                    .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
+                    .setCustomer(user.getCustomerId())
+                    .addLineItem(
+                            SessionCreateParams.LineItem.builder()
+                                    .setPrice(request.getPriceId())
+                                    .setQuantity(1L)
+                                    .build()
+                    )
                     .build();
-            Customer customer = Customer.create(customerParams);
-            user.setCustomerId(customer.getId());
-            userRepository.save(user);
+            Session session = Session.create(params);
+
+            return new StripeCheckoutResponse(session.getUrl());
+        } catch (Exception e) {
+            throw new RuntimeException("Stripe checkout session creation failed", e);
         }
-
-        SessionCreateParams params = SessionCreateParams.builder()
-                .setSuccessUrl(successUrl)
-                .setCancelUrl(cancelUrl)
-                .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
-                .setCustomer(user.getCustomerId())
-                .addLineItem(
-                        SessionCreateParams.LineItem.builder()
-                                .setPrice(request.getPriceId())
-                                .setQuantity(1L)
-                                .build()
-                )
-                .build();
-        Session session = Session.create(params);
-
-        return new StripeCheckoutResponse(session.getUrl());
     }
 }

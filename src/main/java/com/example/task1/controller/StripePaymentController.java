@@ -18,7 +18,7 @@ public class StripePaymentController {
     private final StripePaymentService stripePaymentService;
 
     @PostMapping("/checkout")
-    public StripeCheckoutResponse createCheckoutSession(@RequestBody StripeCheckoutRequest request) throws Exception {
+    public StripeCheckoutResponse createCheckoutSession(@RequestBody StripeCheckoutRequest request){
         return stripePaymentService.createCheckoutSession(request);
     }
 }

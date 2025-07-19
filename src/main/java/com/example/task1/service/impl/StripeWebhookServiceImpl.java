@@ -11,7 +11,6 @@ import com.example.task1.mapper.SubscriptionMapper;
 import com.example.task1.repository.SubscriptionRepository;
 import com.example.task1.repository.UserRepository;
 import com.example.task1.service.StripeWebhookService;
-import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -28,7 +27,6 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
     private final UserRepository userRepository;
     private final SubscriptionMapper subscriptionMapper;
 
-    @Transactional
     public void handleEvent(StripeWebhookEventDto eventDto) {
         if (eventDto.getType() == null || eventDto.getData() == null || eventDto.getData().getObject() == null) {
             log.warn("Received incomplete Stripe webhook event: {}", eventDto);

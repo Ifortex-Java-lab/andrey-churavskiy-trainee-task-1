@@ -22,43 +22,50 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class StripeController {
 
-    private final StripePaymentService stripePaymentService;
-    private final StripePortalService stripePortalService;
-    private final StripeWebhookService stripeWebhookService;
-    private final PlanService planService;
+  private final StripePaymentService stripePaymentService;
+  private final StripePortalService stripePortalService;
+  private final StripeWebhookService stripeWebhookService;
+  private final PlanService planService;
 
-    @GetMapping("/plans/all")
-    public List<PlanResponseDto> getAllPlans() {
-        log.info("Received GET request for all Stripe plans");
-        List<PlanResponseDto> plans = planService.getAllPlans();
-        log.debug("Returning {} plans", plans.size());
-        return plans;
-    }
+  @GetMapping("/plans/all")
+  public List<PlanResponseDto> getAllPlans() {
+    log.info("Received GET request for all Stripe plans");
+    List<PlanResponseDto> plans = planService.getAllPlans();
+    log.debug("Returning {} plans", plans.size());
+    return plans;
+  }
 
-    @PostMapping("/webhook")
-    public ResponseEntity<String> handleStripeWebhook(@RequestBody StripeWebhookEventDto eventDto) {
-        log.info("Received Stripe webhook event: {}", eventDto.getType());
-        stripeWebhookService.handleEvent(eventDto);
-        log.debug("Processed webhook event: {}", eventDto.getType());
-        return ResponseEntity.ok("Webhook received");
-    }
+  @PostMapping("/webhook")
+  public ResponseEntity<String> handleStripeWebhook(@RequestBody StripeWebhookEventDto eventDto) {
+    log.info("Received Stripe webhook event: {}", eventDto.getType());
+    stripeWebhookService.handleEvent(eventDto);
+    log.debug("Processed webhook event: {}", eventDto.getType());
+    return ResponseEntity.ok("Webhook received");
+  }
 
-    @PostMapping("/portal")
-    public StripePortalResponse createPortalSession(@RequestBody StripePortalRequest request) {
-        log.info("Received request to create Stripe portal session for userId: {}", request.getUserId());
-        StripePortalResponse response = stripePortalService.createPortalSession(request);
-        log.debug("Created Stripe portal session for userId: {}. URL: {}", request.getUserId(), response.getUrl());
-        return response;
-    }
+  @PostMapping("/portal")
+  public StripePortalResponse createPortalSession(@RequestBody StripePortalRequest request) {
+    log.info(
+        "Received request to create Stripe portal session for userId: {}", request.getUserId());
+    StripePortalResponse response = stripePortalService.createPortalSession(request);
+    log.debug(
+        "Created Stripe portal session for userId: {}. URL: {}",
+        request.getUserId(),
+        response.getUrl());
+    return response;
+  }
 
-    @PostMapping("/payment")
-    public StripeCheckoutResponse createPaymentSession(@RequestBody StripeCheckoutRequest request){
-        log.info("Received request to create Stripe payment session for userId: {}, priceId: {}",
-                request.getUserId(), request.getPriceId());
-        StripeCheckoutResponse response = stripePaymentService.createCheckoutSession(request);
-        log.debug("Created Stripe payment session for userId: {}. URL: {}",
-                request.getUserId(), response.getCheckoutUrl());
-        return response;
-    }
-
+  @PostMapping("/payment")
+  public StripeCheckoutResponse createPaymentSession(@RequestBody StripeCheckoutRequest request) {
+    log.info(
+        "Received request to create Stripe payment session for userId: {}, priceId: {}",
+        request.getUserId(),
+        request.getPriceId());
+    StripeCheckoutResponse response = stripePaymentService.createCheckoutSession(request);
+    log.debug(
+        "Created Stripe payment session for userId: {}. URL: {}",
+        request.getUserId(),
+        response.getCheckoutUrl());
+    return response;
+  }
 }

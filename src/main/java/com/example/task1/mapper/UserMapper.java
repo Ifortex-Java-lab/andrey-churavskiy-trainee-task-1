@@ -1,6 +1,7 @@
 package com.example.task1.mapper;
 
-import com.example.task1.dto.UserResponseDto;
+import com.example.task1.dto.user.UserCreateDto;
+import com.example.task1.dto.user.UserResponseDto;
 import com.example.task1.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -12,4 +13,6 @@ public interface UserMapper {
   UserResponseDto toDto(User user);
 
   User toEntity(UserResponseDto dto);
+
+  User toEntity(UserCreateDto dto);
 }

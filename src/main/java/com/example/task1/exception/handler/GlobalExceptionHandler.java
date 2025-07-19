@@ -14,29 +14,30 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(), LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex) {
+    ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(), LocalDateTime.now());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+  }
 
-    @ExceptionHandler(ActiveSubscriptionExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleActiveSubscriptionExistsException(ActiveSubscriptionExistsException ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(), LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-    }
+  @ExceptionHandler(ActiveSubscriptionExistsException.class)
+  public ResponseEntity<ErrorResponseDto> handleActiveSubscriptionExistsException(
+      ActiveSubscriptionExistsException ex) {
+    ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(), LocalDateTime.now());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+  }
 
-    @ExceptionHandler(StripeApiException.class)
-    public ResponseEntity<ErrorResponseDto> handleStripeApiException(StripeApiException ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto("Stripe error: " + ex.getMessage(), LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(errorResponse);
-    }
+  @ExceptionHandler(StripeApiException.class)
+  public ResponseEntity<ErrorResponseDto> handleStripeApiException(StripeApiException ex) {
+    ErrorResponseDto errorResponse =
+        new ErrorResponseDto("Stripe error: " + ex.getMessage(), LocalDateTime.now());
+    return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(errorResponse);
+  }
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex) {
-        ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(), LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
-    }
-
-
+  @ExceptionHandler(EmailAlreadyExistsException.class)
+  public ResponseEntity<ErrorResponseDto> handleEmailAlreadyExistsException(
+      EmailAlreadyExistsException ex) {
+    ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(), LocalDateTime.now());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+  }
 }

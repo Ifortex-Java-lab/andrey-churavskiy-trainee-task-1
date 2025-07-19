@@ -10,12 +10,9 @@ import com.example.task1.exception.UserNotFoundException;
 import com.example.task1.repository.SubscriptionRepository;
 import com.example.task1.repository.UserRepository;
 import com.example.task1.service.StripePaymentService;
-import com.stripe.Stripe;
 import com.stripe.model.Price;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
-import jakarta.annotation.PostConstruct;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,22 +26,12 @@ public class StripePaymentServiceImpl implements StripePaymentService {
   private final UserRepository userRepository;
   private final SubscriptionRepository subscriptionRepository;
 
-  @Value("${stripe.api.key}")
-  private String stripeApiKey;
-
   @Value("${stripe.success-url}")
   private String successUrl;
 
   @Value("${stripe.cancel-url}")
   private String cancelUrl;
 
-  @PostConstruct
-  public void init() {
-    Stripe.apiKey = stripeApiKey;
-    log.info("Stripe API key initialized in StripePaymentService");
-  }
-
-  @Transactional
   public StripeCheckoutResponse createCheckoutSession(StripeCheckoutRequest request) {
     log.info(
         "Attempting to create Stripe payment session for userId: {}, priceId: {}",

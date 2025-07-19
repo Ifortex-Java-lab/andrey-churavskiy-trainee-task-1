@@ -11,45 +11,45 @@ import lombok.Setter;
 @Setter
 @Table(name = "subscriptions")
 public class Subscription {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @ManyToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @Column(nullable = false)
-    private String priceId;
+  @Column(nullable = false)
+  private String priceId;
 
-    @Column(nullable = false)
-    private String productId;
+  @Column(nullable = false)
+  private String productId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SubscriptionStatus status;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private SubscriptionStatus status;
 
-    private LocalDateTime currentPeriodEnd;
+  private LocalDateTime currentPeriodEnd;
 
-    private LocalDateTime currentPeriodStart;
+  private LocalDateTime currentPeriodStart;
 
-    private String stripeSubscriptionId;
+  private String stripeSubscriptionId;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+  @Column(nullable = false)
+  private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        LocalDateTime now = LocalDateTime.now();
-        createdAt = now;
-        updatedAt = now;
-    }
+  @PrePersist
+  protected void onCreate() {
+    LocalDateTime now = LocalDateTime.now();
+    createdAt = now;
+    updatedAt = now;
+  }
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = LocalDateTime.now();
+  }
 }

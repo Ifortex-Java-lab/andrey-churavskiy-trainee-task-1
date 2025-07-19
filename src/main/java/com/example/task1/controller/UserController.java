@@ -1,7 +1,7 @@
 package com.example.task1.controller;
 
-import com.example.task1.dto.UserRequestDto;
-import com.example.task1.dto.UserResponseDto;
+import com.example.task1.dto.user.UserRequestDto;
+import com.example.task1.dto.user.UserResponseDto;
 import com.example.task1.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -7,7 +7,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
-    Optional<Subscription> findByStripeSubscriptionId(String stripeSubscriptionId);
-    boolean existsByUserIdAndProductIdAndStatusNot(Long userId, String productId, SubscriptionStatus status);
-    List<Subscription> findByUserId(Long userId);
+  Optional<Subscription> findByStripeSubscriptionId(String stripeSubscriptionId);
+
+  boolean existsByUserIdAndProductIdAndStatusNot(
+      Long userId, String productId, SubscriptionStatus status);
+
+  List<Subscription> findByUserId(Long userId);
 }

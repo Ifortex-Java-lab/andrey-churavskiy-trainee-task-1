@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SubscriptionController {
 
-    private final SubscriptionService subscriptionService;
+  private final SubscriptionService subscriptionService;
 
-    @GetMapping
-    public ResponseEntity<List<SubscriptionResponseDto>> getUserSubscriptions(@RequestParam("userId") Long userId) {
-        log.info("Received request to get subscriptions for userId: {}", userId);
-        List<SubscriptionResponseDto> subscriptions = subscriptionService.getUserSubscriptions(userId);
-        log.debug("Returning {} subscriptions for userId: {}", subscriptions.size(), userId);
-        return ResponseEntity.ok(subscriptions);
-    }
+  @GetMapping
+  public ResponseEntity<List<SubscriptionResponseDto>> getUserSubscriptions(
+      @RequestParam("userId") Long userId) {
+    log.info("Received request to get subscriptions for userId: {}", userId);
+    List<SubscriptionResponseDto> subscriptions = subscriptionService.getUserSubscriptions(userId);
+    log.debug("Returning {} subscriptions for userId: {}", subscriptions.size(), userId);
+    return ResponseEntity.ok(subscriptions);
+  }
 }

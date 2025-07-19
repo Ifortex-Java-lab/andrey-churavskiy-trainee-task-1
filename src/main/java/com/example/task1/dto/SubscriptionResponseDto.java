@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubscriptionResponseDto {
-    private Long id;
-    private Long userId;
-    private String priceId;
-    private String productId;
-    private SubscriptionStatus status;
-    private LocalDateTime currentPeriodStart;
-    private LocalDateTime currentPeriodEnd;
-    private String stripeSubscriptionId;
+  private Long id;
+  private Long userId;
+  private String priceId;
+  private String productId;
+  private SubscriptionStatus status;
+  private LocalDateTime currentPeriodStart;
+  private LocalDateTime currentPeriodEnd;
+  private String stripeSubscriptionId;
 }

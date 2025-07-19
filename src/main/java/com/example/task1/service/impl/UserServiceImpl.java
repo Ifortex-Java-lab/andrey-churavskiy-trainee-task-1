@@ -1,27 +1,25 @@
 package com.example.task1.service.impl;
 
-import com.example.task1.dto.UserRequestDto;
-import com.example.task1.dto.UserResponseDto;
+import com.example.task1.dto.user.UserCreateDto;
+import com.example.task1.dto.user.UserRequestDto;
+import com.example.task1.dto.user.UserResponseDto;
 import com.example.task1.entity.User;
 import com.example.task1.exception.EmailAlreadyExistsException;
 import com.example.task1.exception.StripeApiException;
 import com.example.task1.mapper.UserMapper;
 import com.example.task1.repository.UserRepository;
+import com.example.task1.service.SubscriptionService;
 import com.example.task1.service.UserService;
-import com.stripe.Stripe;
 import com.stripe.model.Customer;
 import com.stripe.model.CustomerCollection;
 import com.stripe.param.CustomerCreateParams;
-import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -29,15 +27,7 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final UserMapper userMapper;
-
-  @Value("${stripe.api.key}")
-  private String stripeApiKey;
-
-  @PostConstruct
-  public void init() {
-    Stripe.apiKey = stripeApiKey;
-    log.info("Stripe API key initialized in UserService");
-  }
+  private final SubscriptionService subscriptionService;
 
   @Transactional
   public UserResponseDto createUser(UserRequestDto requestDto) {
@@ -59,12 +49,13 @@ public class UserServiceImpl implements UserService {
       throw new StripeApiException("Stripe customer creation or fetching failed", e);
     }
 
-    User user = new User();
-    user.setEmail(requestDto.getEmail());
-    user.setCustomerId(customerId);
+    UserCreateDto dto = new UserCreateDto(requestDto.getEmail(), customerId);
 
-    User savedUser = userRepository.save(user);
+    User savedUser = userRepository.save(userMapper.toEntity(dto));
     log.info("User created with id: {}, email: {}", savedUser.getId(), savedUser.getEmail());
+
+    subscriptionService.syncSubscriptionsFromStripe(savedUser);
+    log.info("Stripe subscriptions synced for user id: {}", savedUser.getId());
 
     return userMapper.toDto(savedUser);
   }

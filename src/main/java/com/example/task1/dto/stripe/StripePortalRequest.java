@@ -1,4 +1,4 @@
-package com.example.task1.dto;
+package com.example.task1.dto.stripe;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -4,11 +4,13 @@ import com.example.task1.dto.UserRequestDto;
 import com.example.task1.dto.UserResponseDto;
 import com.example.task1.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -16,14 +18,20 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseDto createUser(@RequestBody UserRequestDto requestDto) {
-        return userService.createUser(requestDto);
+        log.info("Received request to create user with email: {}", requestDto.getEmail());
+        UserResponseDto response = userService.createUser(requestDto);
+        log.debug("User created: {}", response);
+        return response;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<UserResponseDto> getAllUsers() {
-        return userService.getAllUsers();
+        log.info("Received request to get all users");
+        List<UserResponseDto> users = userService.getAllUsers();
+        log.debug("Returning {} users", users.size());
+        return users;
     }
 }

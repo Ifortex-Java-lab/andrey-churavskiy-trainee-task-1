@@ -7,32 +7,6 @@
 	},
 	"item": [
 		{
-			"name": "PlanController",
-			"item": [
-				{
-					"name": "Get plans",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/v1/plans",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"v1",
-								"plans"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "UserController",
 			"item": [
 				{
@@ -50,7 +24,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/users",
+							"raw": "http://localhost:8080/api/v1/users/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -59,7 +33,8 @@
 							"path": [
 								"api",
 								"v1",
-								"users"
+								"users",
+								"create"
 							]
 						}
 					},
@@ -69,31 +44,9 @@
 					"name": "Get users",
 					"request": {
 						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "StripePaymentController",
-			"item": [
-				{
-					"name": "Create session",
-					"request": {
-						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n    \"priceId\": \"price_1RlZLVPmOv9XydwIyTcn1eyC\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/stripe/checkout",
+							"raw": "http://localhost:8080/api/v1/users/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -102,8 +55,8 @@
 							"path": [
 								"api",
 								"v1",
-								"stripe",
-								"checkout"
+								"users",
+								"all"
 							]
 						}
 					},
@@ -112,7 +65,7 @@
 			]
 		},
 		{
-			"name": "StripePortalController",
+			"name": "SripeController",
 			"item": [
 				{
 					"name": "Customer portal",
@@ -140,6 +93,99 @@
 								"v1",
 								"stripe",
 								"portal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create payment session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"priceId\": \"price_1RlZYfPmOv9XydwIXoYE9qzi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/stripe/payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stripe",
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get plans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/stripe/plans/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"stripe",
+								"plans",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SubscriptionController",
+			"item": [
+				{
+					"name": "Get subscriptions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"priceId\": \"price_1RlqEQPmOv9XydwI937csRNr\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/subscriptions?userId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"subscriptions"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
 							]
 						}
 					},

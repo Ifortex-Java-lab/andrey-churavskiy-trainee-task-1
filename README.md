@@ -7,7 +7,7 @@
    Copy the generated public URL.
 
 2. **Set Stripe webhook**
-    - Log in to your Stripe account (email: `andrey.churavskiy@ifortex.com`, password: `2as4Ye8*%I`).
+    - Log in to Stripe account (email: `andrey.churavskiy@ifortex.com`, password: `2as4Ye8*%I`).
     - Add the following webhook endpoint (replace `<ngrok-url>` with the copied address):
       ```
       <ngrok-url>/api/v1/stripe/webhook

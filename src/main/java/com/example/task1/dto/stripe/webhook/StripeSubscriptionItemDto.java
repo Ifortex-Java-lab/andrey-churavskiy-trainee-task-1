@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripeSubscriptionItemDto {
-    private String id;
-    private String object;
-    private StripePriceDto price;
-    private Long current_period_start;
-    private Long current_period_end;
+  private String id;
+  private String object;
+  private StripePriceDto price;
+  private Long current_period_start;
+  private Long current_period_end;
 }

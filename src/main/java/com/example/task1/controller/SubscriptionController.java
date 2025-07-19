@@ -2,12 +2,11 @@ package com.example.task1.controller;
 
 import com.example.task1.dto.SubscriptionResponseDto;
 import com.example.task1.service.SubscriptionService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController

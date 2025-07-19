@@ -4,12 +4,11 @@ import com.example.task1.dto.SubscriptionResponseDto;
 import com.example.task1.mapper.SubscriptionMapper;
 import com.example.task1.repository.SubscriptionRepository;
 import com.example.task1.service.SubscriptionService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service

@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlanResponseDto {
-    private String priceId;
-    private String productName;
-    private Long amount;
-    private String currency;
-    private String interval;
+  private String priceId;
+  private String productName;
+  private Long amount;
+  private String currency;
+  private String interval;
 }

@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripeCheckoutRequest {
-    private Long userId;
-    private String priceId;
+  private Long userId;
+  private String priceId;
 }

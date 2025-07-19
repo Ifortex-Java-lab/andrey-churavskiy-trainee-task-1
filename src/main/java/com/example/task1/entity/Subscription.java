@@ -2,10 +2,9 @@ package com.example.task1.entity;
 
 import com.example.task1.enums.SubscriptionStatus;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

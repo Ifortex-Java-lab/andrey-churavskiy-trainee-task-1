@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripeSubscriptionDto {
-    private String id;
-    private String object;
-    private String status;
-    private String customer;
-    private StripeSubscriptionItemsDto items;
+  private String id;
+  private String object;
+  private String status;
+  private String customer;
+  private StripeSubscriptionItemsDto items;
 }

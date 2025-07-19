@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResponseDto {
-    private Long id;
-    private String email;
-    // TODO: remove in production. Only for development/testing!
-    private String customerId;
+  private Long id;
+  private String email;
+  // TODO: remove in production. Only for development/testing!
+  private String customerId;
 }

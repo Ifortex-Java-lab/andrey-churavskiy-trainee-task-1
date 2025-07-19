@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripeWebhookDataDto {
-    private StripeSubscriptionDto object;
+  private StripeSubscriptionDto object;
 }

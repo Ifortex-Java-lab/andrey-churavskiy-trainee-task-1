@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripePriceDto {
-    private String id;
-    private String object;
-    private String product;
+  private String id;
+  private String object;
+  private String product;
 }

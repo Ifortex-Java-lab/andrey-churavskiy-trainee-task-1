@@ -9,17 +9,17 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface SubscriptionMapper {
-    SubscriptionMapper INSTANCE = Mappers.getMapper(SubscriptionMapper.class);
+  SubscriptionMapper INSTANCE = Mappers.getMapper(SubscriptionMapper.class);
 
-    @Mapping(target = "userId", source = "user.id")
-    SubscriptionDto toDto(Subscription entity);
+  @Mapping(target = "userId", source = "user.id")
+  SubscriptionDto toDto(Subscription entity);
 
-    @Mapping(target = "userId", source = "user.id")
-    SubscriptionResponseDto toResponseDto(Subscription entity);
+  @Mapping(target = "userId", source = "user.id")
+  SubscriptionResponseDto toResponseDto(Subscription entity);
 
-    @Mapping(target = "user.id", source = "userId")
-    Subscription toEntity(SubscriptionDto dto);
+  @Mapping(target = "user.id", source = "userId")
+  Subscription toEntity(SubscriptionDto dto);
 
-    @Mapping(target = "user.id", source = "userId")
-    Subscription toEntity(SubscriptionResponseDto dto);
+  @Mapping(target = "user.id", source = "userId")
+  Subscription toEntity(SubscriptionResponseDto dto);
 }

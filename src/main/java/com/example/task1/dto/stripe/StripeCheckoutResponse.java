@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripeCheckoutResponse {
-    private String checkoutUrl;
+  private String checkoutUrl;
 }

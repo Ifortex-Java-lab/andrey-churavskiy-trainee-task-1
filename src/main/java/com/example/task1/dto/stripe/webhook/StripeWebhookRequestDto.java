@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StripeWebhookRequestDto {
-    private String id;
-    private String idempotency_key;
+  private String id;
+  private String idempotency_key;
 }

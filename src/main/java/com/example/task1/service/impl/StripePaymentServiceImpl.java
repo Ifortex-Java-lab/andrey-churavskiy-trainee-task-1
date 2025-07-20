@@ -8,7 +8,6 @@ import com.example.task1.exception.ActiveSubscriptionExistsException;
 import com.example.task1.exception.StripeApiException;
 import com.example.task1.exception.UserNotFoundException;
 import com.example.task1.repository.SubscriptionRepository;
-import com.example.task1.repository.UserRepository;
 import com.example.task1.service.CurrentUserService;
 import com.example.task1.service.StripePaymentService;
 import com.stripe.model.Price;

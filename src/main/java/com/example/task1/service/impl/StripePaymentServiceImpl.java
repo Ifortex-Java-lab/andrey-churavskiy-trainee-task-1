@@ -9,6 +9,7 @@ import com.example.task1.exception.StripeApiException;
 import com.example.task1.exception.UserNotFoundException;
 import com.example.task1.repository.SubscriptionRepository;
 import com.example.task1.repository.UserRepository;
+import com.example.task1.service.CurrentUserService;
 import com.example.task1.service.StripePaymentService;
 import com.stripe.model.Price;
 import com.stripe.model.checkout.Session;
@@ -23,8 +24,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StripePaymentServiceImpl implements StripePaymentService {
 
-  private final UserRepository userRepository;
   private final SubscriptionRepository subscriptionRepository;
+  private final CurrentUserService currentUserService;
 
   @Value("${stripe.success-url}")
   private String successUrl;
@@ -33,20 +34,8 @@ public class StripePaymentServiceImpl implements StripePaymentService {
   private String cancelUrl;
 
   public StripeCheckoutResponse createCheckoutSession(StripeCheckoutRequest request) {
-    log.info(
-        "Attempting to create Stripe payment session for userId: {}, priceId: {}",
-        request.getUserId(),
-        request.getPriceId());
-
-    User user =
-        userRepository
-            .findById(request.getUserId())
-            .orElseThrow(
-                () -> {
-                  log.warn("User not found with id: {}", request.getUserId());
-                  return new UserNotFoundException(
-                      "User not found with id: " + request.getUserId());
-                });
+    log.info("Attempting to create Stripe payment session for priceId: {}", request.getPriceId());
+    User user = currentUserService.getCurrentUserEntity();
 
     try {
       Price price = Price.retrieve(request.getPriceId());
@@ -97,7 +86,7 @@ public class StripePaymentServiceImpl implements StripePaymentService {
     } catch (ActiveSubscriptionExistsException | UserNotFoundException e) {
       throw e;
     } catch (Exception e) {
-      log.error("Stripe payment session creation failed for userId: {}", request.getUserId(), e);
+      log.error("Stripe payment session creation failed for userId: {}", user.getId(), e);
       throw new StripeApiException("Stripe payment session creation failed", e);
     }
   }

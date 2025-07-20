@@ -3,16 +3,13 @@ package com.example.task1.service.impl;
 import com.example.task1.dto.PlanResponseDto;
 import com.example.task1.exception.StripeApiException;
 import com.example.task1.service.PlanService;
-import com.stripe.Stripe;
 import com.stripe.model.Price;
 import com.stripe.model.PriceCollection;
 import com.stripe.model.Product;
 import com.stripe.param.PriceListParams;
-import jakarta.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j

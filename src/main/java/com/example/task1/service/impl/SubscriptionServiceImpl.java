@@ -7,6 +7,7 @@ import com.example.task1.enums.SubscriptionStatus;
 import com.example.task1.exception.StripeApiException;
 import com.example.task1.mapper.SubscriptionMapper;
 import com.example.task1.repository.SubscriptionRepository;
+import com.example.task1.service.CurrentUserService;
 import com.example.task1.service.SubscriptionService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
@@ -26,62 +27,79 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private final SubscriptionRepository subscriptionRepository;
-    private final SubscriptionMapper subscriptionMapper;
+  private final SubscriptionRepository subscriptionRepository;
+  private final SubscriptionMapper subscriptionMapper;
+  private final CurrentUserService currentUserService;
 
-    public List<SubscriptionResponseDto> getUserSubscriptions(Long userId) {
-        log.info("Fetching subscriptions for userId: {}", userId);
-        List<SubscriptionResponseDto> result = subscriptionRepository.findByUserId(userId)
-                .stream()
-                .map(subscriptionMapper::toResponseDto)
-                .collect(Collectors.toList());
-        log.debug("Fetched {} subscriptions for userId: {}", result.size(), userId);
-        return result;
-    }
+  public List<SubscriptionResponseDto> getUserSubscriptions() {
+    log.info("Fetching user subscriptions");
+    Long userId = currentUserService.getCurrentUserEntity().getId();
+    List<SubscriptionResponseDto> result =
+        subscriptionRepository.findByUserId(userId).stream()
+            .map(subscriptionMapper::toResponseDto)
+            .collect(Collectors.toList());
+    log.debug("Fetched {} subscriptions for userId: {}", result.size(), userId);
+    return result;
+  }
 
-    public void syncSubscriptionsFromStripe(User user) {
-        String stripeCustomerId = user.getCustomerId();
+  public void syncSubscriptionsFromStripe(User user) {
+    String stripeCustomerId = user.getCustomerId();
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("customer", stripeCustomerId);
-        params.put("limit", 100);
+    Map<String, Object> params = new HashMap<>();
+    params.put("customer", stripeCustomerId);
+    params.put("limit", 100);
 
-        try {
-            SubscriptionCollection subscriptions = Subscription.list(params);
+    try {
+      SubscriptionCollection subscriptions = Subscription.list(params);
 
-            log.info("Fetched Stripe subscriptions for userId={} (customerId={}): {}",
-                    user.getId(), stripeCustomerId, subscriptions.getData().size());
+      log.info(
+          "Fetched Stripe subscriptions for userId={} (customerId={}): {}",
+          user.getId(),
+          stripeCustomerId,
+          subscriptions.getData().size());
 
-            for (Subscription stripeSub : subscriptions.getData()) {
-                SubscriptionDto dto = new SubscriptionDto();
-                dto.setUserId(user.getId());
+      for (Subscription stripeSub : subscriptions.getData()) {
+        SubscriptionDto dto = new SubscriptionDto();
+        dto.setUserId(user.getId());
 
-                if (stripeSub.getItems() != null && !stripeSub.getItems().getData().isEmpty()) {
-                    com.stripe.model.SubscriptionItem item = stripeSub.getItems().getData().get(0);
-                    dto.setPriceId(item.getPrice().getId());
-                    dto.setProductId(item.getPrice().getProduct());
-                    dto.setCurrentPeriodEnd(
-                            Instant.ofEpochSecond(item.getCurrentPeriodEnd())
-                                    .atZone(ZoneId.systemDefault()).toLocalDateTime()
-                    );
-                    dto.setCurrentPeriodStart(
-                            Instant.ofEpochSecond(item.getCurrentPeriodStart())
-                                    .atZone(ZoneId.systemDefault()).toLocalDateTime()
-                    );
-                }
-
-                dto.setStatus(SubscriptionStatus.valueOf(stripeSub.getStatus().toUpperCase()));
-                dto.setStripeSubscriptionId(stripeSub.getId());
-
-                subscriptionRepository.save(subscriptionMapper.toEntity(dto));
-
-                log.info("Saved subscription: stripeSubscriptionId={}, userId={}",
-                        dto.getStripeSubscriptionId(), dto.getUserId());
-            }
-        } catch (StripeException e) {
-            log.error("Failed to synchronize subscriptions from Stripe for userId={} (customerId={})",
-                    user.getId(), stripeCustomerId, e);
-            throw new StripeApiException("Failed to synchronize Stripe subscriptions", e);
+        if (stripeSub.getItems() != null && !stripeSub.getItems().getData().isEmpty()) {
+          com.stripe.model.SubscriptionItem item = stripeSub.getItems().getData().get(0);
+          dto.setPriceId(item.getPrice().getId());
+          dto.setProductId(item.getPrice().getProduct());
+          dto.setCurrentPeriodEnd(
+              Instant.ofEpochSecond(item.getCurrentPeriodEnd())
+                  .atZone(ZoneId.systemDefault())
+                  .toLocalDateTime());
+          dto.setCurrentPeriodStart(
+              Instant.ofEpochSecond(item.getCurrentPeriodStart())
+                  .atZone(ZoneId.systemDefault())
+                  .toLocalDateTime());
         }
+
+        dto.setStatus(SubscriptionStatus.valueOf(stripeSub.getStatus().toUpperCase()));
+        dto.setStripeSubscriptionId(stripeSub.getId());
+
+        subscriptionRepository
+            .findByStripeSubscriptionIdAndUserId(dto.getStripeSubscriptionId(), dto.getUserId())
+            .ifPresent(
+                sub -> {
+                  dto.setId(sub.getId());
+                });
+
+        subscriptionRepository.save(subscriptionMapper.toEntity(dto));
+
+        log.info(
+            "Saved subscription: stripeSubscriptionId={}, userId={}",
+            dto.getStripeSubscriptionId(),
+            dto.getUserId());
+      }
+    } catch (StripeException e) {
+      log.error(
+          "Failed to synchronize subscriptions from Stripe for userId={} (customerId={})",
+          user.getId(),
+          stripeCustomerId,
+          e);
+      throw new StripeApiException("Failed to synchronize Stripe subscriptions", e);
     }
+  }
 }

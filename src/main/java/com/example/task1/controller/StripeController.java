@@ -3,7 +3,6 @@ package com.example.task1.controller;
 import com.example.task1.dto.*;
 import com.example.task1.dto.stripe.StripeCheckoutRequest;
 import com.example.task1.dto.stripe.StripeCheckoutResponse;
-import com.example.task1.dto.stripe.StripePortalRequest;
 import com.example.task1.dto.stripe.StripePortalResponse;
 import com.example.task1.dto.stripe.webhook.StripeWebhookEventDto;
 import com.example.task1.service.PlanService;
@@ -44,28 +43,19 @@ public class StripeController {
   }
 
   @PostMapping("/portal")
-  public StripePortalResponse createPortalSession(@RequestBody StripePortalRequest request) {
-    log.info(
-        "Received request to create Stripe portal session for userId: {}", request.getUserId());
-    StripePortalResponse response = stripePortalService.createPortalSession(request);
-    log.debug(
-        "Created Stripe portal session for userId: {}. URL: {}",
-        request.getUserId(),
-        response.getUrl());
+  public StripePortalResponse createPortalSession() {
+    log.info("Received request to create Stripe portal session");
+    StripePortalResponse response = stripePortalService.createPortalSession();
+    log.debug("Created Stripe portal session. URL: {}", response.getUrl());
     return response;
   }
 
   @PostMapping("/payment")
   public StripeCheckoutResponse createPaymentSession(@RequestBody StripeCheckoutRequest request) {
     log.info(
-        "Received request to create Stripe payment session for userId: {}, priceId: {}",
-        request.getUserId(),
-        request.getPriceId());
+        "Received request to create Stripe payment session for priceId: {}", request.getPriceId());
     StripeCheckoutResponse response = stripePaymentService.createCheckoutSession(request);
-    log.debug(
-        "Created Stripe payment session for userId: {}. URL: {}",
-        request.getUserId(),
-        response.getCheckoutUrl());
+    log.debug("Created Stripe payment session. URL: {}", response.getCheckoutUrl());
     return response;
   }
 }

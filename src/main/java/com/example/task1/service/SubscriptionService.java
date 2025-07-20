@@ -5,6 +5,7 @@ import com.example.task1.entity.User;
 import java.util.List;
 
 public interface SubscriptionService {
-    List<SubscriptionResponseDto> getUserSubscriptions(Long userId);
-    void syncSubscriptionsFromStripe(User user);
+  List<SubscriptionResponseDto> getUserSubscriptions();
+
+  void syncSubscriptionsFromStripe(User user);
 }

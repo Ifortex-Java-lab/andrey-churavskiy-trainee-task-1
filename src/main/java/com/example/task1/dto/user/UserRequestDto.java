@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserRequestDto {
   private String email;
+  private String password;
 }

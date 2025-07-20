@@ -17,11 +17,10 @@ public class SubscriptionController {
   private final SubscriptionService subscriptionService;
 
   @GetMapping
-  public ResponseEntity<List<SubscriptionResponseDto>> getUserSubscriptions(
-      @RequestParam("userId") Long userId) {
-    log.info("Received request to get subscriptions for userId: {}", userId);
-    List<SubscriptionResponseDto> subscriptions = subscriptionService.getUserSubscriptions(userId);
-    log.debug("Returning {} subscriptions for userId: {}", subscriptions.size(), userId);
+  public ResponseEntity<List<SubscriptionResponseDto>> getUserSubscriptions() {
+    log.info("Received request to get subscriptions");
+    List<SubscriptionResponseDto> subscriptions = subscriptionService.getUserSubscriptions();
+    log.debug("Returning {} subscriptions", subscriptions.size());
     return ResponseEntity.ok(subscriptions);
   }
 }

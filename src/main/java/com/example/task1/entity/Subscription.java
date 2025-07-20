@@ -33,6 +33,7 @@ public class Subscription {
 
   private LocalDateTime currentPeriodStart;
 
+  @Column(nullable = false, unique = true)
   private String stripeSubscriptionId;
 
   @Column(nullable = false, updatable = false)

@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class UserCreateDto {
   private String email;
   private String customerId;
+  private String password;
 }

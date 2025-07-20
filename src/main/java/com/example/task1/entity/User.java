@@ -1,5 +1,6 @@
 package com.example.task1.entity;
 
+import com.example.task1.enums.Role;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,8 +19,15 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
 
+  @Column(nullable = false)
+  private String password;
+
   @Column(unique = true)
   private String customerId;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Role role;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<Subscription> subscription;

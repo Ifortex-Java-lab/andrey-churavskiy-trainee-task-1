@@ -14,7 +14,6 @@ import com.example.task1.service.UserService;
 import com.stripe.model.Customer;
 import com.stripe.model.CustomerCollection;
 import com.stripe.param.CustomerCreateParams;
-import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -53,8 +52,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
       throw new StripeApiException("Stripe customer creation or fetching failed", e);
     }
 
-    UserCreateDto createDto = new UserCreateDto(dto.getEmail(), customerId, dto.getPassword());
-    User savedUser = userRepository.save(userMapper.toEntity(createDto));
+    User savedUser =
+        userRepository.save(
+            userMapper.toEntity(new UserCreateDto(dto.getEmail(), customerId, dto.getPassword())));
     log.info("User created with id: {}, email: {}", savedUser.getId(), savedUser.getEmail());
 
     subscriptionService.syncSubscriptionsFromStripe(savedUser);

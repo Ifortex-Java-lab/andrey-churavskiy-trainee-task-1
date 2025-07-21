@@ -65,8 +65,8 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
         priceId = item.getPrice().getId();
         productId = item.getPrice().getProduct();
       }
-      currentPeriodStart = item.getCurrent_period_start();
-      currentPeriodEnd = item.getCurrent_period_end();
+      currentPeriodStart = item.getCurrentPeriodStart();
+      currentPeriodEnd = item.getCurrentPeriodEnd();
     }
 
     Optional<Subscription> optionalSubscription =

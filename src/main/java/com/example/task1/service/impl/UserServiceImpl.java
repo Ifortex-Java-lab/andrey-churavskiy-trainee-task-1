@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
   private final SubscriptionService subscriptionService;
   private final CurrentUserService currentUserService;
 
-  @Transactional
   public User createUser(UserRequestDto dto) {
     log.info("Attempting to create user with email: {}", dto.getEmail());
 
